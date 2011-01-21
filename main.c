@@ -4,10 +4,14 @@
 #include <signal.h>
 #include <pthread.h>
 #include <netinet/in.h>
+#include <errno.h>
+#include <sys/times.h>
+
 #define _GNU_SOURCE
 #include <getopt.h>
 #include "ipgen.h"
 #include "log.h"
+#include "timer.h"
 #include "main.h"
 
 #define VERSION "0.1.1 (2001/Mar/16)"
@@ -210,8 +214,24 @@ void
 *send_packet_thread(void *arg)
 {
 	thread_arg_t *t_arg = (thread_arg_t *)arg;
+	unsigned long cur_time;
+	unsigned long last_time;
+	unsigned long m_interval = 1000;	// msec
+	unsigned long interval = 1000 * 1000 * 1000;
+
+	get_cur_time(&last_time);
 
 	while(!break_loop){
+		get_cur_time(&cur_time);
+
+		if(cur_time < (last_time + interval)){
+			continue;
+		}
+
+		printf("cur_time : %d, last_time : %d\n", cur_time, last_time);
+		
+		last_time = cur_time;
+
 
 	};
 

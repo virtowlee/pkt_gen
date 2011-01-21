@@ -10,7 +10,7 @@ CC	:=	gcc
 AR	:=	ar rc
 AR2	:=	ranlib
 
-OBJS	:=	ipgen.o main.o log.o
+OBJS	:=	ipgen.o main.o log.o timer.c
 targets	:=	pkg_gen	
 
 all:	$(targets)
