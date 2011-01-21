@@ -214,23 +214,40 @@ void
 *send_packet_thread(void *arg)
 {
 	thread_arg_t *t_arg = (thread_arg_t *)arg;
+	struct timeval  tm;
+	time_t cru_time, last_time;
+
+#if 0
 	unsigned long cur_time;
 	unsigned long last_time;
 	unsigned long m_interval = 1000;	// msec
 	unsigned long interval = 1000 * 1000 * 1000;
+#endif
 
 	get_cur_time(&last_time);
 
+	gettimeofday(&tm, NULL);
+	last_time = tm.tv_sec;
+
 	while(!break_loop){
+	
+		gettimeofday(&tm, NULL);
+		if(tm.tv_sec < (last_time + 1))
+			continue;
+			
+		
+
+#if 0
 		get_cur_time(&cur_time);
 
 		if(cur_time < (last_time + interval)){
 			continue;
 		}
+#endif
 
-		printf("cur_time : %d, last_time : %d\n", cur_time, last_time);
+		printf("cur_time : %d, last_time : %d\n", tm.tv_sec, last_time);
 		
-		last_time = cur_time;
+		last_time = tm.tv_sec;
 
 
 	};
